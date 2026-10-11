@@ -1,0 +1,9 @@
+# Keeps the SHA-pinned actions current (Dependabot updates the SHA and the
+# version comment together). The mdBook submodule is deliberately excluded:
+# it must track release tags, which update-upstream.yml handles.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

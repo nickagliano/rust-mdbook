@@ -1,0 +1,10 @@
+# The single source of truth for which upstream mdBook release this package
+# builds. The `mdBook/` submodule must point at `commit`, and the upstream
+# `tag` must still resolve to `commit`; scripts/verify_upstream.py fails the
+# build otherwise. Updated by scripts/bump_upstream.py (see
+# .github/workflows/update-upstream.yml).
+
+[upstream]
+repository = "https://github.com/rust-lang/mdBook"
+tag = "v0.5.4"
+commit = "2ea30c00f00647d2b3f4c0f79b3e0e1eabc0b66d"

@@ -1,0 +1,40 @@
+[build-system]
+requires = ["maturin>=1.15,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "mdbook"
+# Mirrors the upstream tag pinned in upstream.toml. Packaging-only fixes use
+# post-releases (e.g. "0.5.4.post1"). Enforced by scripts/verify_upstream.py.
+version = "0.5.4"
+description = "Unofficial PyPI repackaging of mdBook, a utility to create books from Markdown files"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MPL-2.0"
+license-files = ["LICENSE"]
+keywords = ["mdbook", "markdown", "book", "documentation", "gitbook"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Rust",
+    "Topic :: Documentation",
+    "Topic :: Software Development :: Documentation",
+    "Topic :: Text Processing :: Markup :: Markdown",
+]
+
+[project.urls]
+Repository = "https://github.com/nickagliano/mdbook-python"
+Upstream = "https://github.com/rust-lang/mdBook"
+Documentation = "https://rust-lang.github.io/mdBook/"
+Changelog = "https://github.com/rust-lang/mdBook/blob/master/CHANGELOG.md"
+
+[tool.maturin]
+bindings = "bin"
+manifest-path = "mdBook/Cargo.toml"
+# Build exactly the dependency versions upstream locked; fail rather than resolve.
+locked = true
+strip = true

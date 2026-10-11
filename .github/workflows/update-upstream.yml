@@ -1,0 +1,70 @@
+# Daily: fail loudly if the pinned upstream tag has moved, and if upstream has
+# a newer release, open a PR that bumps the pin. Never builds for release or
+# publishes; a human merges the PR and runs release.yml.
+name: Update upstream
+
+on:
+  schedule:
+    - cron: "17 6 * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: update-upstream
+  cancel-in-progress: false
+
+jobs:
+  bump:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write # push the bump branch
+      pull-requests: write # open the PR
+      actions: write # dispatch CI on the bump branch
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: true
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Verify current pin
+        run: python scripts/verify_upstream.py
+
+      - name: Check for a newer upstream release
+        id: bump
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/bump_upstream.py
+
+      - name: Verify new pin
+        if: steps.bump.outputs.bumped == 'true'
+        run: python scripts/verify_upstream.py
+
+      - name: Open pull request
+        if: steps.bump.outputs.bumped == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.bump.outputs.tag }}
+          VERSION: ${{ steps.bump.outputs.version }}
+        run: |
+          gh auth setup-git
+          branch="bump/mdbook-${TAG}"
+          if git ls-remote --exit-code --heads origin "$branch" > /dev/null; then
+            echo "Branch $branch already exists; not opening another PR."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git add upstream.toml pyproject.toml LICENSE mdBook
+          git commit -m "Bump mdBook to ${TAG}"
+          git push origin "$branch"
+          gh pr create --base master --head "$branch" \
+            --title "Bump mdBook to ${TAG}" \
+            --body "Upstream release: https://github.com/rust-lang/mdBook/releases/tag/${TAG}
+
+          Moves the \`mdBook\` submodule and \`upstream.toml\` pin to \`${TAG}\` and sets the package version to \`${VERSION}\`. Review the upstream diff and CI, then merge and run the Release workflow. Nothing has been published."
+          gh workflow run ci.yml --ref "$branch"
