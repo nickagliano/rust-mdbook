@@ -62,8 +62,10 @@ jobs:
           rust-toolchain: ${{ env.RUST_TOOLCHAIN }}
           target: ${{ matrix.platform.target }}
           manylinux: ${{ matrix.platform.manylinux }}
-          # `locked = true` in pyproject.toml makes this use upstream's Cargo.lock as-is.
-          args: --release --out dist
+          # Build exactly the dependency versions in upstream's Cargo.lock. Not set in
+          # pyproject.toml: the sdist trims unused workspace members, so source
+          # builds must be allowed to prune the lockfile (versions stay as locked).
+          args: --release --locked --out dist
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: dist-wheel-${{ matrix.platform.name }}

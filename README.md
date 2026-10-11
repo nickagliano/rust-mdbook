@@ -87,7 +87,7 @@ as new as upstream's `rust-version` (1.88 for mdBook 0.5.4).
   moved).
 - Wheels are built with [maturin](https://github.com/PyO3/maturin) in binary
   mode (`bindings = "bin"`), using upstream's `Cargo.lock` unchanged
-  (`locked = true`) and upstream's default features.
+  (`cargo --locked`) and upstream's default features.
 - In CI, each wheel is installed into a fresh virtualenv on its own platform,
   and `mdbook --version` has to match the pinned version.
 - Every GitHub Action is pinned to a full commit SHA. Releases go to PyPI

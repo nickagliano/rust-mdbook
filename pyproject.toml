@@ -35,6 +35,4 @@ Changelog = "https://github.com/rust-lang/mdBook/blob/master/CHANGELOG.md"
 [tool.maturin]
 bindings = "bin"
 manifest-path = "mdBook/Cargo.toml"
-# Build exactly the dependency versions upstream locked; fail rather than resolve.
-locked = true
 strip = true
