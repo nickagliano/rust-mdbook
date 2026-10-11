@@ -3,7 +3,7 @@ requires = ["maturin>=1.15,<2.0"]
 build-backend = "maturin"
 
 [project]
-name = "mdbook"
+name = "rust-mdbook"
 # Mirrors the upstream tag pinned in upstream.toml. Packaging-only fixes use
 # post-releases (e.g. "0.5.4.post1"). Enforced by scripts/verify_upstream.py.
 version = "0.5.4"
@@ -27,7 +27,7 @@ classifiers = [
 ]
 
 [project.urls]
-Repository = "https://github.com/nickagliano/mdbook-python"
+Repository = "https://github.com/nickagliano/rust-mdbook"
 Upstream = "https://github.com/rust-lang/mdBook"
 Documentation = "https://rust-lang.github.io/mdBook/"
 Changelog = "https://github.com/rust-lang/mdBook/blob/master/CHANGELOG.md"

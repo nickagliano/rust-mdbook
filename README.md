@@ -1,10 +1,10 @@
-# mdbook (unofficial PyPI package)
+# rust-mdbook (unofficial PyPI package for mdBook)
 
 > **This is an unofficial repackaging.** It isn't affiliated with or endorsed by
 > the mdBook maintainers or the Rust project. For mdBook itself (docs, issues,
 > source), go to **[rust-lang/mdBook](https://github.com/rust-lang/mdBook)**.
 > Report a packaging problem (a wheel that won't install, a missing platform)
-> [here](https://github.com/nickagliano/mdbook-python/issues), and anything about
+> [here](https://github.com/nickagliano/rust-mdbook/issues), and anything about
 > mdBook's behavior upstream.
 
 [mdBook](https://github.com/rust-lang/mdBook) is a command-line tool for
@@ -16,23 +16,24 @@ a Rust toolchain.
 ## Install
 
 ```sh
-pip install mdbook
+pip install rust-mdbook
 ```
 
 or as a dev dependency with uv:
 
 ```sh
-uv add --dev mdbook
+uv add --dev rust-mdbook
 ```
 
 or run it once without installing:
 
 ```sh
-uvx mdbook --version
+uvx --from rust-mdbook mdbook --version
 ```
 
-Either way, the `mdbook` executable ends up on your `PATH` (inside the active
-virtualenv). There's no Python API; the package only contains the binary.
+The package is named `rust-mdbook` (like [`rust-just`](https://pypi.org/project/rust-just/)
+for `just`), but the command it installs is plain `mdbook`, on your `PATH`
+inside the active virtualenv. There's no Python API; the package only contains the binary.
 
 ## Usage
 
@@ -61,7 +62,7 @@ the packaging changed. `mdbook --version` always prints the upstream version
 (`mdbook v0.5.4`).
 
 To pin the upstream version, including any packaging fixes, use a compatible
-range: `mdbook>=0.5.4,<0.5.5`.
+range: `rust-mdbook>=0.5.4,<0.5.5`.
 
 ## Platforms
 
@@ -112,8 +113,8 @@ sdist on PyPI.
 ## Development
 
 ```sh
-git clone --recurse-submodules https://github.com/nickagliano/mdbook-python
-cd mdbook-python
+git clone --recurse-submodules https://github.com/nickagliano/rust-mdbook
+cd rust-mdbook
 python scripts/verify_upstream.py        # check the pin
 uvx maturin build --release --out dist   # build a wheel for this machine
 python scripts/check_dist.py dist/*.whl  # install it in a fresh venv and test it
